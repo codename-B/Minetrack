@@ -25,13 +25,16 @@ var lastGraphPush = [];
 
 function pingAll() {
 	ping.ping(null, null, 'NA', config.rates.connectTimeout, function(err, res) {
-		for (var i = 0; i < servers.length; i++) {
-			var server = servers[i];
-			if (res.ip == server.ip) {
-				console.log(res);
-				handlePing(server, res, err, 0);
+		if (err) {
+			console.log(err);
+		} else {
+			for (var i = 0; i < servers.length; i++) {
+				var server = servers[i];
+				if (res.ip == server.ip) {
+					handlePing(server, res, err, 0);
+				}
 			}
-		}
+		}	
 	});
 	/*
 	for (var i = 0; i < servers.length; i++) {
@@ -201,12 +204,13 @@ function handlePing(network, res, err, attemptedVersion) {
 // Start our main loop that does everything.
 function startMainLoop() {
 	util.setIntervalNoDelay(pingAll, config.rates.pingAll);
-
+	/*
 	util.setIntervalNoDelay(function() {
 		mojang.update(config.rates.mojangStatusTimeout);
 
 		server.io.sockets.emit('updateMojangServices', mojang.toMessage());
 	}, config.rates.upateMojangStatus);
+	*/
 }
 
 function startServices() {
