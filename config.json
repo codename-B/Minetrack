@@ -23,8 +23,7 @@
 	"logToDatabase": false,
 	"graphDuration": 86400000,
 	"serverCategories": {
-		"minigames": "Minigame Networks",
-		"pocket": "Pocket Edition Networks"
+		"roblox": "Roblox Games"
 	},
 	"versions": {
 		"PC": [
@@ -39,6 +38,9 @@
 			477
 		],
 		"PE": [
+			0
+		],
+		"NA": [
 			0
 		]
 	},

@@ -13,7 +13,8 @@ var connectedClients = 0;
 
 var currentVersionIndex = {
 	'PC': 0,
-	'PE': 0
+	'PE': 0,
+	'NA': 0
 };
 
 var networkVersions = [];
@@ -23,6 +24,16 @@ var highestPlayerCount = {};
 var lastGraphPush = [];
 
 function pingAll() {
+	ping.ping(null, null, 'NA', config.rates.connectTimeout, function(err, res) {
+		for (var i = 0; i < servers.length; i++) {
+			var server = servers[i];
+			if (res.ip == server.ip) {
+				console.log(res);
+				handlePing(server, res, err, 0);
+			}
+		}
+	});
+	/*
 	for (var i = 0; i < servers.length; i++) {
 		// Make sure we lock our scope.
 		(function(network) {
@@ -47,9 +58,11 @@ function pingAll() {
 			}, attemptedVersion);
 		})(servers[i]);
 	}
+	*/
 
 	currentVersionIndex['PC']++;
 	currentVersionIndex['PE']++;
+	currentVersionIndex['NA']++;
 
 	if (currentVersionIndex['PC'] >= config.versions['PC'].length) {
 		// Loop around
@@ -59,6 +72,11 @@ function pingAll() {
 	if (currentVersionIndex['PE'] >= config.versions['PE'].length) {
 		// Loop around
 		currentVersionIndex['PE'] = 0;
+	}
+
+	if (currentVersionIndex['NA'] >= config.versions['NA'].length) {
+		// Loop around
+		currentVersionIndex['NA'] = 0;
 	}
 }
 
