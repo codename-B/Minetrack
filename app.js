@@ -23,8 +23,17 @@ var graphData = [];
 var highestPlayerCount = {};
 var lastGraphPush = [];
 
+var uriBase = "https://games.roblox.com/v1/games?universeIds="
+var uri = uriBase;
+
 function pingAll() {
-	ping.ping(null, null, 'NA', config.rates.connectTimeout, function(err, res) {
+	uri = uriBase;
+	for (var i = 0; i < servers.length; i++) {
+		var server = servers[i];
+		uri = uri + server.ip + ","
+	}
+
+	ping.ping(uri, null, 'NA', config.rates.connectTimeout, function(err, res) {
 		if (err) {
 			console.log(err);
 		} else {
@@ -36,32 +45,6 @@ function pingAll() {
 			}
 		}	
 	});
-	/*
-	for (var i = 0; i < servers.length; i++) {
-		// Make sure we lock our scope.
-		(function(network) {
-			// Asign auto generated color if not present
-			if (!network.color) {
-				network.color = util.stringToColor(network.name);
-			}
-
-			var attemptedVersion = config.versions[network.type][currentVersionIndex[network.type]];
-			ping.ping(network.ip, network.port, network.type, config.rates.connectTimeout, function(err, res) {
-				// Handle our ping results, if it succeeded.
-				if (err) {
-					logger.log('error', 'Failed to ping ' + network.ip + ': ' + err.message);
-				}
-
-				// If we have favicon override specified, use it.
-				if (res && config.faviconOverride && config.faviconOverride[network.name]) {
-					res.favicon = config.faviconOverride[network.name];
-				}
-
-				handlePing(network, res, err, attemptedVersion);
-			}, attemptedVersion);
-		})(servers[i]);
-	}
-	*/
 
 	currentVersionIndex['PC']++;
 	currentVersionIndex['PE']++;
